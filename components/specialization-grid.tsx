@@ -172,63 +172,46 @@ export default function SpecializationGrid() {
           </p>
         </div>
 
-        {/* Grid mit Spezialisierungen */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {/* Grid mit Spezialisierungen - Minimalistischer Ansatz */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {specializations.map((spec) => (
-            <motion.div
+            <div
               key={spec.id}
-              className={`h-[280px] group relative rounded-xl overflow-hidden shadow-lg ${spec.gradient} text-white`}
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="bg-black/30 border border-white/10 hover:border-primary/30 rounded-xl overflow-hidden transition-all duration-300"
             >
-              {/* Background Pattern */}
-              <div className={`absolute inset-0 z-0 opacity-20 pattern-${spec.pattern}`}></div>
-              
-              {/* Glass overlay */}
-              <div className="absolute inset-0 bg-black/15 backdrop-blur-[1px] z-10"></div>
-              
-              {/* Border effect */}
-              <div className="absolute inset-0 border border-white/10 rounded-xl z-20"></div>
-              
-              {/* Content container with hover transition */}
-              <div className="absolute inset-0 p-6 flex flex-col justify-between z-30 transition-all duration-500 group-hover:translate-y-[-60px]">
-                {/* Icon and title */}
-                <div>
-                  <div className="backdrop-blur-lg bg-black/40 w-14 h-14 rounded-xl flex items-center justify-center mb-4 shadow-lg border border-white/20">
+              <div 
+                className="p-6 h-full flex flex-col cursor-pointer"
+                onClick={() => setActiveSpecialization(spec.id === activeSpecialization ? null : spec.id)}
+              >
+                {/* Icon und Titel */}
+                <div className="mb-4 flex items-center">
+                  <div className="bg-black/40 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
                     {spec.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2 text-shadow">{spec.title}</h3>
-                  <p className="text-white/90 text-sm leading-relaxed text-shadow">{spec.shortDesc}</p>
+                  <h3 className="text-lg font-medium text-white">{spec.title}</h3>
                 </div>
                 
-                {/* Bottom "fade" for hover indicator */}
-                <div className="flex items-center mt-2 text-white text-sm text-shadow">
-                  <span>Mehr erfahren</span>
-                  <ArrowRight className="h-4 w-4 ml-2" />
+                {/* Beschreibung */}
+                <p className="text-white/80 text-sm mb-5">{spec.shortDesc}</p>
+                
+                {/* Positionen Liste - nur die ersten 3 */}
+                <div className="mt-auto">
+                  <h4 className="text-xs uppercase text-white/60 mb-2">Top Positionen</h4>
+                  <ul className="space-y-1">
+                    {spec.positions.slice(0, 3).map((position, idx) => (
+                      <li key={idx} className="text-xs text-white/80">
+                        {position}
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <div className="mt-4 text-primary text-sm flex items-center">
+                    Mehr erfahren
+                    <ArrowRight className="h-3 w-3 ml-1" />
+                  </div>
                 </div>
               </div>
-              
-              {/* Hidden content that appears on hover */}
-              <div className="absolute inset-x-0 bottom-0 p-6 bg-black/60 backdrop-blur-md rounded-t-xl transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 border-t border-white/10 z-30">
-                <h4 className="text-white font-medium mb-2">Positionen:</h4>
-                <ul className="space-y-1">
-                  {spec.positions.slice(0, 3).map((position, idx) => (
-                    <li key={idx} className="flex items-start text-sm">
-                      <CheckCircle className="h-4 w-4 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-white">{position}</span>
-                    </li>
-                  ))}
-                </ul>
-                
-                <button 
-                  onClick={() => setActiveSpecialization(spec.id === activeSpecialization ? null : spec.id)}
-                  className="mt-4 w-full py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white text-sm font-medium transition-colors flex items-center justify-center"
-                >
-                  Details ansehen
-                  <ArrowRight className="h-4 w-4 ml-2" />
-                </button>
-              </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
@@ -240,7 +223,7 @@ export default function SpecializationGrid() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
-              className="bg-black/40 backdrop-blur-lg border border-primary/20 rounded-xl p-8 relative mb-12 text-white"
+              className="bg-black/40 border border-white/10 rounded-xl p-6 relative mb-12 text-white"
             >
               <button
                 onClick={() => setActiveSpecialization(null)}
@@ -256,56 +239,50 @@ export default function SpecializationGrid() {
                   <div key={spec.id} className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
                       <div className="flex items-center mb-4">
-                        <div
-                          className={`w-12 h-12 rounded-full bg-gradient-to-r from-indigo-500 to-violet-600 flex items-center justify-center mr-4 text-white`}
-                        >
+                        <div className="bg-black/40 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
                           {spec.icon}
                         </div>
-                        <h3 className="text-2xl font-bold text-white">{spec.title}</h3>
+                        <h3 className="text-xl font-medium text-white">{spec.title}</h3>
                       </div>
 
-                      <p className="text-white mb-6">{spec.fullDesc}</p>
+                      <p className="text-white/80 mb-6">{spec.fullDesc}</p>
 
-                      <div className="mb-6">
-                        <h4 className="font-medium text-white mb-3">Typische Positionen:</h4>
+                      <div>
+                        <h4 className="text-sm uppercase text-white/60 mb-3">Unsere Expertise umfasst</h4>
                         <ul className="space-y-2">
-                          {spec.positions.map((position, index) => (
-                            <li key={index} className="flex items-start">
-                              <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                              <span className="text-white">{position}</span>
+                          {spec.positions.map((position, idx) => (
+                            <li key={idx} className="flex items-start">
+                              <CheckCircle className="h-4 w-4 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                              <span className="text-white/90 text-sm">{position}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
-
-                      <Button className="bg-primary hover:bg-primary/90">
-                        Beratungsgespräch vereinbaren <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
                     </div>
 
-                    <div className="bg-gradient-to-br from-black/60 to-black/40 border border-white/10 rounded-lg p-6">
+                    <div className="bg-black/30 border border-white/10 rounded-lg p-6">
                       <h4 className="text-lg font-medium text-white mb-4">Unsere Expertise im Bereich {spec.title}</h4>
 
                       <div className="space-y-4">
-                        <div className="bg-black/30 rounded-lg p-4">
+                        <div className="bg-black/20 rounded-lg p-4">
                           <h5 className="font-medium mb-2 text-primary">Branchenkenntnis</h5>
-                          <p className="text-sm text-white">
+                          <p className="text-sm text-white/80">
                             Unsere Recruiter haben selbst Erfahrung in der Branche und verstehen die fachlichen
                             Anforderungen im Detail.
                           </p>
                         </div>
 
-                        <div className="bg-black/30 rounded-lg p-4">
+                        <div className="bg-black/20 rounded-lg p-4">
                           <h5 className="font-medium mb-2 text-primary">Spezialisiertes Netzwerk</h5>
-                          <p className="text-sm text-white">
+                          <p className="text-sm text-white/80">
                             Wir verfügen über ein umfangreiches Netzwerk an Spezialisten und passive Kandidaten in
                             diesem Bereich.
                           </p>
                         </div>
 
-                        <div className="bg-black/30 rounded-lg p-4">
+                        <div className="bg-black/20 rounded-lg p-4">
                           <h5 className="font-medium mb-2 text-primary">Maßgeschneiderte Prozesse</h5>
-                          <p className="text-sm text-white">
+                          <p className="text-sm text-white/80">
                             Unsere Recruiting-Prozesse sind auf die Besonderheiten dieser Branche zugeschnitten.
                           </p>
                         </div>
@@ -322,7 +299,7 @@ export default function SpecializationGrid() {
           <p className="text-white mb-6">
             Entdecken Sie, wie wir Ihnen bei der Besetzung von Positionen in Ihrer Branche helfen können
           </p>
-          <Button className="bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white">
+          <Button className="bg-primary hover:bg-primary/90 text-white">
             Alle Branchen entdecken <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>

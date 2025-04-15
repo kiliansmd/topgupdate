@@ -62,8 +62,8 @@ export default function Navbar() {
         isIOS ? "ios-header" : ""
       )}
     >
-      <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-        <Link href="/" className="flex items-center">
+      <div className="max-w-7xl w-full mx-auto px-4 md:px-6 flex items-center justify-between">
+        <Link href="/" className="flex items-center relative z-10">
           <Image
             src="/images/getexperts-logo.png"
             alt="GetExperts Logo"
@@ -75,7 +75,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -92,7 +92,7 @@ export default function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-white p-2 touch-manipulation"
+          className="md:hidden text-white p-2 touch-manipulation relative z-10"
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? "Close Menu" : "Open Menu"}
           style={{ touchAction: 'manipulation' }}
@@ -104,7 +104,7 @@ export default function Navbar() {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="md:hidden fixed top-[60px] left-0 right-0 bottom-0 bg-background/95 backdrop-blur-sm border-b border-border/20 overflow-y-auto z-50">
-          <div className="container mx-auto px-4 py-6 flex flex-col space-y-4">
+          <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col space-y-4">
             {navLinks.map((link) => (
               <div key={link.name}>
                 <Link
