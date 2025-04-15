@@ -4,6 +4,15 @@ import { prisma } from '@/lib/db/schema';
 // GET handler to fetch all published articles
 export async function GET(request: Request) {
   try {
+    // Check if prisma is available
+    if (!prisma) {
+      console.error('Prisma client not available');
+      return NextResponse.json(
+        { error: 'Database connection unavailable' },
+        { status: 503 }
+      );
+    }
+
     // Extract query parameters
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
@@ -19,18 +28,27 @@ export async function GET(request: Request) {
       ...(searchParams.has('featured') && { featured }),
     };
     
-    // Fetch articles with filters
-    const articles = await prisma.article.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-      take: limit,
-    });
-    
-    return NextResponse.json({ articles }, { status: 200 });
+    try {
+      // Fetch articles with filters
+      const articles = await prisma.article.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+      });
+      
+      // Return a single response
+      return NextResponse.json({ articles }, { status: 200 });
+    } catch (dbError) {
+      console.error('Database error fetching articles:', dbError);
+      return NextResponse.json(
+        { error: 'Database error', details: dbError instanceof Error ? dbError.message : 'Unknown error' },
+        { status: 500 }
+      );
+    }
   } catch (error) {
-    console.error('Error fetching articles:', error);
+    console.error('Error in articles API route:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch articles' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

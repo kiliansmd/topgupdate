@@ -19,8 +19,16 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
+    // Check if device is iOS
+    const ua = window.navigator.userAgent;
+    const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+    const webkit = !!ua.match(/WebKit/i);
+    const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+    setIsIOS(iOSSafari);
+    
     const handleScroll = () => {
       if (window.scrollY > 10) {
         setScrolled(true)
@@ -33,11 +41,25 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   return (
     <header
       className={cn(
-        "fixed top-9 w-full z-40 transition-all duration-500", // Längere Dauer für sanfteren Übergang
-        scrolled ? "bg-background/90 backdrop-blur-md border-b border-border/20 py-3" : "bg-transparent py-5",
+        "fixed top-0 sm:top-9 w-full z-40 transition-all duration-500", // Längere Dauer für sanfteren Übergang
+        scrolled ? "bg-background/90 backdrop-blur-md border-b border-border/20 py-3" : "bg-transparent py-3 sm:py-5",
+        isIOS ? "ios-header" : ""
       )}
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
@@ -48,6 +70,7 @@ export default function Navbar() {
             width={150}
             height={40}
             className="h-8 md:h-10 w-auto"
+            priority
           />
         </Link>
 
@@ -69,9 +92,10 @@ export default function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-white"
+          className="md:hidden text-white p-2 touch-manipulation"
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? "Close Menu" : "Open Menu"}
+          style={{ touchAction: 'manipulation' }}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -79,21 +103,26 @@ export default function Navbar() {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border/20">
+        <div className="md:hidden fixed top-[60px] left-0 right-0 bottom-0 bg-background/95 backdrop-blur-sm border-b border-border/20 overflow-y-auto z-50">
           <div className="container mx-auto px-4 py-6 flex flex-col space-y-4">
             {navLinks.map((link) => (
               <div key={link.name}>
                 <Link
                   href={link.href}
-                  className="block py-2 text-white/80 hover:text-white transition-colors"
+                  className="block py-4 text-white/80 hover:text-white transition-colors text-lg font-medium"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.name}
                 </Link>
               </div>
             ))}
-            <div>
-              <Button className="bg-primary hover:bg-primary/90 text-white w-full mt-4">Kontakt aufnehmen</Button>
+            <div className="pt-4">
+              <Button 
+                className="bg-primary hover:bg-primary/90 text-white w-full py-6 text-lg"
+                onClick={() => setIsOpen(false)}
+              >
+                Kontakt aufnehmen
+              </Button>
             </div>
           </div>
         </div>

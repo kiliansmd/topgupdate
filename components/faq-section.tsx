@@ -1,12 +1,24 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState, useMemo } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { motion } from "framer-motion"
 import { Search, ChevronRight, PlusCircle, Shield, Users, Briefcase, CreditCard, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { Input } from '@/components/ui/input'
+import { SearchIcon, XIcon } from 'lucide-react'
+
+// FAQ Typen definieren
+type FAQItem = {
+  question: string;
+  answer: string;
+};
+
+type FAQData = {
+  [category: string]: FAQItem[];
+};
 
 export default function FAQSection() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -14,16 +26,16 @@ export default function FAQSection() {
 
   // FAQ-Kategorien
   const categories = [
-    { id: "allgemein", label: "Allgemein", icon: <PlusCircle className="h-4 w-4" /> },
-    { id: "prozess", label: "Prozess", icon: <Clock className="h-4 w-4" /> },
-    { id: "kosten", label: "Kosten", icon: <CreditCard className="h-4 w-4" /> },
-    { id: "unternehmen", label: "Für Unternehmen", icon: <Briefcase className="h-4 w-4" /> },
-    { id: "kandidaten", label: "Für Kandidaten", icon: <Users className="h-4 w-4" /> },
-    { id: "datenschutz", label: "Datenschutz", icon: <Shield className="h-4 w-4" /> },
+    { id: "allgemein", label: "Allgemein", icon: <PlusCircle className="h-4 w-4 text-white" /> },
+    { id: "prozess", label: "Prozess", icon: <Clock className="h-4 w-4 text-white" /> },
+    { id: "kosten", label: "Kosten", icon: <CreditCard className="h-4 w-4 text-white" /> },
+    { id: "unternehmen", label: "Für Unternehmen", icon: <Briefcase className="h-4 w-4 text-white" /> },
+    { id: "kandidaten", label: "Für Kandidaten", icon: <Users className="h-4 w-4 text-white" /> },
+    { id: "datenschutz", label: "Datenschutz", icon: <Shield className="h-4 w-4 text-white" /> },
   ]
 
   // Erweiterte FAQ-Daten mit Kategorien
-  const faqData = {
+  const faqData: FAQData = {
     allgemein: [
       {
         question: "Wie funktioniert das erfolgsbasierte Vergütungsmodell?",
@@ -129,7 +141,7 @@ export default function FAQSection() {
   }
 
   // Filterfunktion für die Suche
-  const filteredFaqs = Object.entries(faqData).reduce((acc, [category, questions]) => {
+  const filteredFaqs = Object.entries(faqData).reduce<FAQData>((acc, [category, questions]) => {
     const filteredQuestions = questions.filter(
       (faq) =>
         faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -139,13 +151,13 @@ export default function FAQSection() {
       acc[category] = filteredQuestions
     }
     return acc
-  }, {})
+  }, {});
 
   // Bestimme, ob Suchergebnisse vorhanden sind
-  const hasSearchResults = Object.values(filteredFaqs).some((questions: any) => questions.length > 0)
+  const hasSearchResults = Object.values(filteredFaqs).some((questions) => questions.length > 0)
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-24 relative overflow-hidden faq-section">
       {/* Hintergrund mit Gradient */}
       <div className="absolute inset-0 bg-[#0d0d14]"></div>
       <div className="absolute inset-0 bg-gradient-to-b from-indigo-900/10 via-violet-900/5 to-background"></div>
@@ -153,7 +165,7 @@ export default function FAQSection() {
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Diese FAQ-Sektion sollte als letztes Element vor der CTA-Sektion platziert werden */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto text-white">
           <div className="text-center mb-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -169,7 +181,7 @@ export default function FAQSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-bold mb-6"
+              className="text-4xl md:text-5xl font-bold mb-6 text-white"
             >
               Haben Sie{" "}
               <span className="bg-gradient-to-r from-indigo-400 to-violet-500 bg-clip-text text-transparent">
@@ -211,31 +223,32 @@ export default function FAQSection() {
 
           {searchQuery ? (
             // Suchergebnisse anzeigen
-            <div className="bg-[#0f0f1a]/80 backdrop-blur-sm border border-white/10 rounded-xl p-6 md:p-8">
-              <h3 className="text-xl font-bold mb-6">
+            <div className="bg-[#0f0f1a]/80 backdrop-blur-sm border border-white/10 rounded-xl p-6 md:p-8 text-white">
+              <h3 className="text-xl font-bold mb-6 text-white">
                 {hasSearchResults
                   ? `Suchergebnisse für "${searchQuery}"`
                   : `Keine Ergebnisse für "${searchQuery}" gefunden`}
               </h3>
 
               {hasSearchResults ? (
-                Object.entries(filteredFaqs).map(([category, questions]: [string, any]) => (
+                Object.entries(filteredFaqs).map(([category, questions]) => (
                   <div key={category} className="mb-8">
-                    <h4 className="text-lg font-medium mb-4 flex items-center">
+                    <h4 className="text-lg font-medium mb-4 flex items-center text-white">
                       {categories.find((c) => c.id === category)?.icon}
-                      <span className="ml-2">{categories.find((c) => c.id === category)?.label}</span>
+                      <span className="ml-2 text-white">{categories.find((c) => c.id === category)?.label}</span>
                     </h4>
                     <Accordion type="single" collapsible className="space-y-4">
                       {questions.map((faq, index) => (
                         <AccordionItem
                           key={index}
                           value={`${category}-${index}`}
-                          className="bg-[#0d0d14]/80 border border-white/10 rounded-lg overflow-hidden"
+                          className="bg-[#0d0d14]/80 border border-white/10 rounded-lg overflow-hidden text-white"
+                          data-accordion-item
                         >
-                          <AccordionTrigger className="px-6 py-4 text-left font-medium hover:no-underline">
+                          <AccordionTrigger className="px-6 py-4 text-left font-medium hover:no-underline text-white">
                             {faq.question}
                           </AccordionTrigger>
-                          <AccordionContent className="px-6 pb-4 text-white/70">{faq.answer}</AccordionContent>
+                          <AccordionContent className="px-6 pb-4 text-white">{faq.answer}</AccordionContent>
                         </AccordionItem>
                       ))}
                     </Accordion>
@@ -243,10 +256,10 @@ export default function FAQSection() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-white/60 mb-4">
+                  <p className="text-white mb-4">
                     Leider konnten wir keine passenden Antworten zu Ihrer Suche finden.
                   </p>
-                  <p className="text-white/60 mb-6">
+                  <p className="text-white mb-6">
                     Bitte versuchen Sie es mit anderen Suchbegriffen oder kontaktieren Sie uns direkt.
                   </p>
                   <Button className="bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white">
@@ -258,16 +271,16 @@ export default function FAQSection() {
           ) : (
             // Normale FAQ-Ansicht mit Tabs
             <Tabs defaultValue="allgemein" value={activeTab} onValueChange={setActiveTab}>
-              <div className="flex justify-center mb-8 overflow-x-auto pb-2">
-                <TabsList className="bg-[#0f0f1a]/80 border border-white/10 p-1">
+              <div className="flex justify-center mb-8 overflow-x-auto pb-2 -mx-4 px-4">
+                <TabsList className="bg-[#0f0f1a]/80 border border-white/10 p-1 flex flex-wrap md:flex-nowrap">
                   {categories.map((category) => (
                     <TabsTrigger
                       key={category.id}
                       value={category.id}
-                      className="flex items-center gap-2 px-4 py-2 data-[state=active]:bg-primary/20 data-[state=active]:text-white"
+                      className="flex items-center justify-center gap-2 px-3 py-2 md:px-4 md:py-2 text-sm data-[state=active]:bg-primary/20 data-[state=active]:text-white text-white min-w-[auto] md:min-w-[100px]"
                     >
-                      {category.icon}
-                      <span>{category.label}</span>
+                      <span className="hidden md:inline">{category.icon}</span>
+                      <span className="text-white whitespace-nowrap">{category.label}</span>
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -275,18 +288,19 @@ export default function FAQSection() {
 
               {categories.map((category) => (
                 <TabsContent key={category.id} value={category.id} className="mt-0">
-                  <div className="bg-[#0f0f1a]/80 backdrop-blur-sm border border-white/10 rounded-xl p-6 md:p-8">
+                  <div className="bg-[#0f0f1a]/80 backdrop-blur-sm border border-white/10 rounded-xl p-4 md:p-8 text-white">
                     <Accordion type="single" collapsible className="space-y-4">
                       {faqData[category.id]?.map((faq, index) => (
                         <AccordionItem
                           key={index}
                           value={`item-${index}`}
-                          className="bg-[#0d0d14]/80 border border-white/10 rounded-lg overflow-hidden"
+                          className="bg-[#0d0d14]/80 border border-white/10 rounded-lg overflow-hidden text-white"
+                          data-accordion-item
                         >
-                          <AccordionTrigger className="px-6 py-4 text-left font-medium hover:no-underline">
+                          <AccordionTrigger className="px-4 py-3 md:px-6 md:py-4 text-left font-medium hover:no-underline text-white">
                             {faq.question}
                           </AccordionTrigger>
-                          <AccordionContent className="px-6 pb-4 text-white/70">{faq.answer}</AccordionContent>
+                          <AccordionContent className="px-4 pb-3 md:px-6 md:pb-4 text-white">{faq.answer}</AccordionContent>
                         </AccordionItem>
                       ))}
                     </Accordion>
@@ -304,13 +318,13 @@ export default function FAQSection() {
             viewport={{ once: true }}
             className="text-center mt-12"
           >
-            <p className="text-white/60 mb-4">Haben Sie weitere Fragen?</p>
+            <p className="text-white mb-4">Haben Sie weitere Fragen?</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button className="bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white">
                 Kontakt aufnehmen <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
               <Link href="/ueber-uns">
-                <Button variant="outline" className="border-white/20 hover:bg-white/5">
+                <Button variant="outline" className="border-white/20 hover:bg-white/5 text-white">
                   Mehr über uns
                 </Button>
               </Link>

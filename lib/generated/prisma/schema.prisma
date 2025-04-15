@@ -33,3 +33,32 @@ model Article {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+// Job model for SEO-optimized job listings
+model Job {
+  id               String    @id @default(cuid())
+  title            String
+  slug             String    @unique
+  company          String
+  location         String
+  employmentType   String // Vollzeit, Teilzeit, Freiberuflich, etc.
+  workModel        String // Remote, Hybrid, Vor Ort
+  salary           String?
+  description      String // Full HTML content
+  responsibilities String // HTML list
+  requirements     String // HTML list
+  benefits         String // HTML list
+  applicationUrl   String?
+  contactEmail     String?
+  logoUrl          String?
+  industry         String
+  category         String // IT, Marketing, Finance, etc.
+  tags             String // Comma-separated skills and keywords
+  featured         Boolean   @default(false)
+  urgent           Boolean   @default(false)
+  published        Boolean   @default(true)
+  views            Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  expiresAt        DateTime?
+}

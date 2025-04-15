@@ -63,6 +63,7 @@
   --destructive: 239, 68, 68;
   --destructive-foreground: 255, 255, 255;
   --radius: 0.5rem;
+  color-scheme: dark;
 }
 
 @layer base {
@@ -118,42 +119,147 @@
   }
 }
 
-/* Verbessere die Utility-Klassen für ein konsistenteres Erscheinungsbild */
-.gradient-text {
-  @apply bg-gradient-to-r from-primary-400 via-primary-300 to-primary-400 bg-clip-text text-transparent;
+/* Gezieltere Selektoren für FAQ-Komponenten */
+.faq-section *:not([class*="bg-clip-text"]):not([class*="text-transparent"]) {
+  color: rgb(255, 255, 255);
 }
 
+/* Fix für Text-Transparenz bei Gradient-Texten */
+.bg-clip-text.text-transparent,
+[class*="bg-clip-text"][class*="text-transparent"],
+.gradient-text,
+.faq-section .bg-clip-text.text-transparent,
+.faq-section [class*="bg-clip-text"][class*="text-transparent"] {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+/* Gradient-Text Definition */
+.gradient-text {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  --tw-gradient-from: #818cf8 var(--tw-gradient-from-position);
+  --tw-gradient-to: #a78bfa var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+/* Für FAQ-spezifische Gradient-Texte */
+.faq-section .gradient-text,
+.faq-section [class*="from-indigo-"][class*="to-violet-"][class*="bg-clip-text"] {
+  background-image: linear-gradient(to right, #818cf8, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+/* Fix für SVG und Icon-Farben in der FAQ-Section */
+.faq-section svg,
+.faq-section [class*="icon"] {
+  color: currentColor;
+}
+
+/* Verbessere die Utility-Klassen für ein konsistenteres Erscheinungsbild */
 .glass-card {
-  @apply bg-black/30 backdrop-blur-md border border-white/10 rounded-lg transition-all duration-300 hover:border-white/15;
+  background-color: rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .glass-button {
-  @apply bg-black/30 backdrop-blur-md border border-white/20 rounded-md hover:bg-black/40 hover:border-white/30 transition-all duration-300;
+  background-color: rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.375rem;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+.glass-button:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .primary-button {
-  @apply bg-gradient-to-r from-primary-600 to-primary-800 hover:from-primary-700 hover:to-primary-900 text-white rounded-md transition-all duration-300 shadow-md shadow-primary-600/20 hover:shadow-lg hover:shadow-primary-600/30;
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  --tw-gradient-from: rgb(var(--primary-600)) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(var(--primary-800)) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  color: white;
+  border-radius: 0.375rem;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  box-shadow: 0 4px 6px -1px rgba(var(--primary-600), 0.2);
+}
+.primary-button:hover {
+  --tw-gradient-from: rgb(var(--primary-700)) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(var(--primary-900)) var(--tw-gradient-to-position);
+  box-shadow: 0 10px 15px -3px rgba(var(--primary-600), 0.3);
 }
 
 .section-padding {
-  @apply py-16 md:py-24 lg:py-28;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
 }
 
 .container-padding {
-  @apply px-4 md:px-6 lg:px-8;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+@media (min-width: 768px) {
+  .container-padding {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .container-padding {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
 /* Enhanced gradient classes */
 .gradient-bg-primary {
-  @apply bg-gradient-to-r from-indigo-600 to-violet-700;
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  --tw-gradient-from: #4f46e5 var(--tw-gradient-from-position);
+  --tw-gradient-to: #7e22ce var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
 .gradient-bg-secondary {
-  @apply bg-gradient-to-r from-blue-600 to-cyan-500;
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  --tw-gradient-from: #2563eb var(--tw-gradient-from-position);
+  --tw-gradient-to: #06b6d4 var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
 .gradient-bg-dark {
-  @apply bg-gradient-to-r from-gray-900 to-slate-800;
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  --tw-gradient-from: #111827 var(--tw-gradient-from-position);
+  --tw-gradient-to: #1e293b var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
 .gradient-border {
@@ -209,10 +315,31 @@
   background: rgba(var(--primary), 0.5);
 }
 
-/* Für Firefox */
-.custom-scrollbar {
+/* Für moderne Browser: Verwende eine Mischung aus Standard-CSS und -webkit-Präfixen */
+.fancy-scrollbar {
+  /* Firefox */
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.05);
+  scrollbar-color: rgba(var(--primary), 0.3) rgba(0, 0, 0, 0.1);
+  /* Webkit */
+  overflow: auto;
+}
+
+.fancy-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.fancy-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.fancy-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(var(--primary), 0.3);
+  border-radius: 5px;
+}
+
+/* Spezifische Klasse statt global selector für bessere Kompatibilität */
+.custom-scrollbar {
+  overflow: auto;
 }
 
 /* Sophisticated animations */
@@ -673,4 +800,132 @@
 .klasse-mit-backdrop-filter {
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
+}
+
+/* Mobile-first Ansatz: Grundlegende Stile für alle Geräte */
+@media screen and (max-width: 640px) {
+  html, body {
+    overflow-x: hidden; /* Verhindert horizontales Scrollen auf mobilen Geräten */
+    position: relative; /* Hilft bei der Vermeidung von Layout-Verschiebungen */
+  }
+  
+  /* Verbessere die Textlesbarkeit auf mobilen Geräten */
+  p, span, div, li {
+    font-size: 16px; /* Mindestgröße für gute Lesbarkeit */
+    line-height: 1.5;
+  }
+  
+  h1 {
+    font-size: 2rem !important;
+    line-height: 1.2;
+  }
+  
+  h2 {
+    font-size: 1.75rem !important;
+    line-height: 1.2;
+  }
+  
+  h3 {
+    font-size: 1.5rem !important;
+    line-height: 1.3;
+  }
+  
+  /* Verbesserte Touch-Ziele für mobile Geräte */
+  button, a, [role="button"], .button {
+    min-height: 44px; /* Apple-Richtlinien für Touch-Ziele */
+    min-width: 44px;
+    padding: 0.5rem 1rem;
+  }
+  
+  /* Anpassen der Container-Breite */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Verbessere Abstände für mobile Ansicht */
+  .section-padding {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  /* FAQ-Sektion spezifische Mobiloptimierungen */
+  .faq-section [role="tablist"] {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .faq-section [role="tab"] {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Verbesserungen für die mobile Navigation */
+@media screen and (max-width: 768px) {
+  nav {
+    padding: 0.75rem 1rem;
+  }
+  
+  .nav-items {
+    gap: 1rem;
+  }
+}
+
+/* Fix für Overflow-Probleme bei Flexbox-Elementen */
+.flex {
+  max-width: 100%;
+}
+
+/* Verbessere die Skalierung von Bildern auf mobilen Geräten */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Optimiere Schriftgröße für verschiedene Bildschirmgrößen */
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 14px; /* Leicht reduzierte Basisgröße für sehr kleine Bildschirme */
+  }
+}
+
+/* iOS Safari spezifische Anpassungen */
+.ios-safari {
+  -webkit-text-size-adjust: 100%; /* Verhindert ungewollte Textvergrößerung für ältere Browser */
+  text-size-adjust: 100%; /* Standardisierte Eigenschaft für moderne Browser */
+}
+
+.ios-safari input,
+.ios-safari button {
+  -webkit-appearance: none; /* Entfernt Safari's Standard-Styling */
+  border-radius: 0; /* Verhindert Abrundungen bei Eingabefeldern */
+}
+
+/* iOS Safari Form-Elemente Fix */
+.ios-safari input[type="text"],
+.ios-safari input[type="email"],
+.ios-safari input[type="search"],
+.ios-safari input[type="password"] {
+  font-size: 16px !important; /* Verhindert Zoom auf Input-Felder auf iOS */
+}
+
+/* Fix für 100vh Problem auf iOS */
+@supports (-webkit-touch-callout: none) {
+  .h-screen {
+    height: -webkit-fill-available;
+  }
+  
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Verbessere die Scrolling-Erfahrung auf Touch-Geräten */
+@media (pointer: coarse) {
+  .scroll-smooth {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
 }
