@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState, ChangeEvent, FormEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -21,16 +21,16 @@ export default function ContactPage() {
 
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormState((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleRadioChange = (value) => {
+  const handleRadioChange = (value: string) => {
     setFormState((prev) => ({ ...prev, inquiryType: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     // Here you would normally send the form data to your backend
     console.log(formState)
