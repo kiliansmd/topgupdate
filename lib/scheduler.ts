@@ -6,7 +6,7 @@ let jobTimer: NodeJS.Timeout | null = null;
 function getNextScheduleTime(cronExpression: string): Date {
   // Vereinfachte Implementierung für die häufigsten Cron-Muster
   const now = new Date();
-  let nextTime = new Date(now);
+  const nextTime = new Date(now);
   
   if (cronExpression === '0 10 * * 1,4') {
     // Montag und Donnerstag um 10:00 Uhr
