@@ -75,7 +75,11 @@
     overflow-x: hidden;
   }
 
-  /* Enhanced typography for premium feel */
+  .font-heading {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+  }
+
   h1,
   h2,
   h3,
