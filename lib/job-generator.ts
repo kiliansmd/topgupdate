@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import { prisma } from './db/schema';
+import { PrismaClient } from '@prisma/client';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -267,4 +268,32 @@ export async function generateMultipleJobs(count: number = 3): Promise<number> {
   }
   
   return successCount;
+}
+
+// Neue Funktion zur Generierung von Beispiel-Jobs
+export async function generateSampleJobs(): Promise<number> {
+  const prisma = new PrismaClient();
+  
+  try {
+    // Prüfe, ob bereits Jobs vorhanden sind
+    const jobCount = await prisma.job.count();
+    
+    if (jobCount > 0) {
+      console.log('Jobs bereits in der Datenbank vorhanden, überspringe Sample-Generierung');
+      return jobCount;
+    }
+    
+    console.log('Generiere Sample-Jobs...');
+    
+    // Generiere 10 Jobs (oder die konfigurierte Anzahl)
+    const generatedCount = await generateMultipleJobs(10);
+    console.log(`${generatedCount} Sample-Jobs erfolgreich generiert`);
+    
+    return generatedCount;
+  } catch (error) {
+    console.error('Fehler beim Generieren von Sample-Jobs:', error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
 } 
