@@ -12,7 +12,6 @@
   "outputDirectory": ".next",
   "installCommand": "npm install",
   "devCommand": "next dev",
-  "ignoreCommand": "node -e \"process.exit(0)\"",
   "cleanUrls": true,
   "regions": ["fra1"],
   "crons": [
