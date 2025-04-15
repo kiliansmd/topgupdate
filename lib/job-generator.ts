@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY || "OPENAI_API_KEY_PLACEHOLDER", // Echter Schlüssel wird über Environment Variables gesetzt
 });
 
 // List of job categories with industry-specific information
