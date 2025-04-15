@@ -1,42 +1,28 @@
 // Database schema for the recruiting-agency application
 // We'll use Prisma ORM for database interactions
 
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../../lib/generated/prisma';
 
 // Check if we're in a Node.js environment (not Edge Runtime)
 const isNodeEnv = typeof window === 'undefined' && 
   process.env.NEXT_RUNTIME !== 'edge';
 
-// PrismaClient is attached to the `global` object in development to prevent
-// exhausting your database connection limit during hot reloads.
-const globalForPrisma = global as unknown as { prisma: PrismaClient }
+// Vermeide mehrere Instanzen des PrismaClient in Entwicklungsumgebungen
+// https://www.prisma.io/docs/guides/other/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
 
-// Initialize PrismaClient with proper error handling
-let prismaInstance: PrismaClient | null = null;
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
 
-try {
-  if (isNodeEnv) {
-    if (process.env.NODE_ENV === 'production') {
-      prismaInstance = new PrismaClient({
-        log: ['error'],
-      });
-    } else {
-      // In development, use global instance to prevent connection leaks
-      if (!globalForPrisma.prisma) {
-        globalForPrisma.prisma = new PrismaClient({
-          log: ['query', 'error', 'warn'],
-        });
-      }
-      prismaInstance = globalForPrisma.prisma;
-    }
-  } else {
-    console.warn('PrismaClient not initialized: running in Edge Runtime or browser');
-  }
-} catch (error) {
-  console.error('Failed to initialize Prisma client:', error);
-}
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  });
 
-export const prisma = prismaInstance as PrismaClient;
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+
+export default prisma;
 
 // Safely export generated Prisma types
 try {
