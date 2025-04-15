@@ -3,9 +3,12 @@ import { generateSampleJobs } from '@/lib/job-generator';
 import { generateAndSaveArticle } from '@/lib/article-generator';
 import { prisma } from '@/lib/db/schema';
 
-export async function GET(request: NextRequest) {
+/**
+ * API-Route zum Initialisieren von Beispieldaten
+ */
+export async function GET(_request: NextRequest) {
   try {
-    // Generiere Sample-Jobs, falls noch keine vorhanden sind
+    // Generiere Beispiel-Jobs, wenn noch keine vorhanden sind
     const jobCount = await generateSampleJobs();
     
     // Prüfe, ob Artikel vorhanden sind
@@ -22,14 +25,14 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json({ 
       success: true,
-      message: `Setup erfolgreich abgeschlossen. ${jobCount} Jobs und ${articleCount + articlesGenerated} Artikel sind in der Datenbank verfügbar.`,
+      message: `Es wurden ${jobCount} Jobs und ${articleCount + articlesGenerated} Artikel in der Datenbank gefunden oder erstellt.`,
       jobCount,
       articleCount: articleCount + articlesGenerated
     });
   } catch (error) {
-    console.error('Fehler bei der Setup-Routine:', error);
+    console.error("Fehler beim Setup-Prozess:", error);
     return NextResponse.json(
-      { success: false, message: 'Setup fehlgeschlagen', error: error instanceof Error ? error.message : String(error) },
+      { success: false, error: "Fehler beim Setup-Prozess" },
       { status: 500 }
     );
   }

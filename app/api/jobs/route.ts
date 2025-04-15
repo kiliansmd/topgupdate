@@ -1,19 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db/schema';
 
+interface JobFilters {
+  category?: string;
+  search?: string;
+  location?: string;
+  employmentType?: string;
+  workModel?: string;
+  page?: number;
+  limit?: number;
+}
+
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams;
+    const { searchParams } = new URL(request.url);
+    
+    const filters: JobFilters = {
+      category: searchParams.get('category') || undefined,
+      search: searchParams.get('search') || undefined,
+      location: searchParams.get('location') || undefined,
+      employmentType: searchParams.get('employmentType') || undefined,
+      workModel: searchParams.get('workModel') || undefined,
+      page: searchParams.get('page') ? parseInt(searchParams.get('page') as string) : 1,
+      limit: searchParams.get('limit') ? parseInt(searchParams.get('limit') as string) : 10
+    };
     
     // Parse query parameters for filtering
-    const category = searchParams.get('category');
-    const location = searchParams.get('location');
-    const employmentType = searchParams.get('type');
-    const workModel = searchParams.get('workModel');
-    const searchTerm = searchParams.get('search');
+    const category = filters.category;
+    const location = filters.location;
+    const employmentType = filters.employmentType;
+    const workModel = filters.workModel;
+    const searchTerm = filters.search;
     const featuredOnly = searchParams.get('featured') === 'true';
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const page = filters.page ?? 1;
+    const limit = filters.limit ?? 10;
     
     // Build the where clause based on filters
     const where: any = { published: true };
