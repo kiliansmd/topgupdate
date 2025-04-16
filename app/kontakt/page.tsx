@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { motion } from "framer-motion"
-import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react"
+import { Mail, Phone, MapPin, Send, CheckCircle, Shield, Users, Clock, Award } from "lucide-react"
 
 export default function ContactPage() {
   const [formState, setFormState] = useState({
@@ -110,7 +110,81 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Rest der Seite bleibt unverändert */}
+      {/* Benefits-Sektion direkt nach der Hero-Sektion */}
+      <section className="py-12 bg-black/80 border-t border-b border-white/10">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Benefit 1 */}
+            <motion.div 
+              className="flex items-center gap-4" 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-gradient-to-br from-indigo-500 to-violet-600 rounded-full p-3 shrink-0">
+                <Award className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">100% Kostenlos</h3>
+                <p className="text-white/70 text-sm">Für Bewerber und Talente</p>
+              </div>
+            </motion.div>
+
+            {/* Benefit 2 */}
+            <motion.div 
+              className="flex items-center gap-4" 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-gradient-to-br from-indigo-500 to-violet-600 rounded-full p-3 shrink-0">
+                <Shield className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">DSGVO-Zertifiziert</h3>
+                <p className="text-white/70 text-sm">Ihre Daten sind sicher bei uns</p>
+              </div>
+            </motion.div>
+
+            {/* Benefit 3 */}
+            <motion.div 
+              className="flex items-center gap-4" 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-gradient-to-br from-indigo-500 to-violet-600 rounded-full p-3 shrink-0">
+                <Users className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">Diskret & unverbindlich</h3>
+                <p className="text-white/70 text-sm">Vertraulicher Bewerbungsprozess</p>
+              </div>
+            </motion.div>
+
+            {/* Benefit 4 */}
+            <motion.div 
+              className="flex items-center gap-4" 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-gradient-to-br from-indigo-500 to-violet-600 rounded-full p-3 shrink-0">
+                <Clock className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">Wir übernehmen die Arbeit</h3>
+                <p className="text-white/70 text-sm">Von der Suche bis zum Vertragsabschluss</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section className="section-padding bg-black relative">
         <div className="container mx-auto px-4 md:px-6">
