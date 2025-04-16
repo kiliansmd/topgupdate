@@ -76,6 +76,36 @@ export default function ContactPage() {
               Haben Sie Fragen oder möchten Sie mehr über unsere Dienstleistungen erfahren? Kontaktieren Sie uns noch
               heute.
             </motion.p>
+            
+            {/* Annika Müller - Head of Recruiting */}
+            <motion.div 
+              className="mt-12 flex flex-col items-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <div className="w-40 h-40 mb-4 overflow-hidden rounded-full border-4 border-indigo-500/50">
+                <img 
+                  src="/annika-mueller.jpg" 
+                  alt="Annika Müller, Head of Recruiting"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-xl font-bold mb-1">Annika Müller</h3>
+              <p className="text-indigo-400 font-medium mb-3">Head of Recruiting</p>
+              <p className="text-white/70 max-w-md mx-auto mb-4">
+                Lassen Sie sich von unserer Recruiting-Expertin persönlich beraten. 
+                Annika und ihr Team freuen sich, Ihnen weiterzuhelfen.
+              </p>
+              <div className="flex gap-3">
+                <a href="mailto:annika.mueller@getexperts.de" className="text-sm glass-button px-4 py-2 flex items-center gap-2">
+                  <Mail className="h-4 w-4" /> E-Mail
+                </a>
+                <a href="tel:+4912345678901" className="text-sm glass-button px-4 py-2 flex items-center gap-2">
+                  <Phone className="h-4 w-4" /> Direkt anrufen
+                </a>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
